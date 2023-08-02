@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<Devices>
+
+	<Device type="custom" id="Sensibodevice">
+		<Name>Sensibo Controller</Name>
+
+		<ConfigUI>
+			<!-- FeedType -->
+
+			<Field id="settingsLabel" type="label" fontSize="small">
+				<Label>Select Sensibo Device</Label>
+			</Field>
+
+			<Field id="devicetype" type="menu" defaultValue="Sensibo Controller" tooltip="Type of sensible device">
+				<Label>Select Device:</Label>
+				<List class="self" method="deviceListGenerator"/>
+			</Field>
+
+		</ConfigUI>
+
+		<States>
+			<State id="podID">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Pod ID</TriggerLabel>
+				<ControlPageLabel>Pod ID</ControlPageLabel>
+			</State>
+
+			<State id="model">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Model</TriggerLabel>
+				<ControlPageLabel>Model</ControlPageLabel>
+			</State>
+
+			<State id="online">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Sensibo Services</TriggerLabel>
+				<ControlPageLabel>Sensibo Services</ControlPageLabel>
+			</State>
+
+			<State id="power">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Power</TriggerLabel>
+				<ControlPageLabel>Power</ControlPageLabel>
+			</State>
+
+			<State id="temperature">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
+			</State>
+
+			<State id="mode">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Mode</TriggerLabel>
+				<ControlPageLabel>Mode</ControlPageLabel>
+			</State>
+
+			<State id="fanLevel">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Fan</TriggerLabel>
+				<ControlPageLabel>Fan</ControlPageLabel>
+			</State>
+			<State id="humidity">
+				<ValueType>Float</ValueType>
+				<TriggerLabel>Humidity</TriggerLabel>
+				<ControlPageLabel>Humidity</ControlPageLabel>
+			</State>
+			<State id="temperatureUnit">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Units</TriggerLabel>
+				<ControlPageLabel>Units</ControlPageLabel>
+			</State>
+			<State id="targetTemperature">
+				<ValueType>Float</ValueType>
+				<TriggerLabel>Target temperature</TriggerLabel>
+				<ControlPageLabel>Target temperature</ControlPageLabel>
+			</State>
+
+			<State id="nativeTemperatureUnit">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Native temperature units</TriggerLabel>
+				<ControlPageLabel>Native temperature units</ControlPageLabel>
+			</State>
+			<State id="nativeTargetTemperature">
+				<ValueType>Float</ValueType>
+				<TriggerLabel>Native target temperature</TriggerLabel>
+				<ControlPageLabel>Native target temperature</ControlPageLabel>
+			</State>
+
+
+			<State id="motion">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Motion detected</TriggerLabel>
+				<ControlPageLabel>Motion detected</ControlPageLabel>
+			</State>
+
+			<State id="swing">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Swing state</TriggerLabel>
+				<ControlPageLabel>Swing state</ControlPageLabel>
+			</State>
+
+			<!--<State id="roomIsOccupied">
+				<ValueType>String</ValueType>
+				<TriggerLabel>roomIsOccupied</TriggerLabel>
+				<ControlPageLabel>roomIsOccupied</ControlPageLabel>
+			</State>-->
+
+
+		</States>
+
+		<UiDisplayStateId>power</UiDisplayStateId>
+
+	</Device>
+
+</Devices>

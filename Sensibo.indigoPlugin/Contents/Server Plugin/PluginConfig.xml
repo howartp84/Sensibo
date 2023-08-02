@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<PluginConfig>
+	<Field id= "apikey" type="textfield">
+		<Label>Sensibo API Key:</Label>
+	</Field>
+
+	<Field id="pcSep1" type="separator" />
+
+
+	<Field id="pluginloglevel" type="menu" defaultValue="0">
+		<Label>Logging level</Label>
+		<List>
+			<Option value="0">None</Option>
+			<Option value="1">Debug</Option>
+		</List>
+	</Field>
+
+	<Field id="v0" type="label" visibleBindingId="pluginloglevel" visibleBindingValue="0">
+		<Label>No logging at all ( everything is working :) )</Label>
+	</Field>
+	<Field id="v1" type="label" visibleBindingId="pluginloglevel" visibleBindingValue="1">
+		<Label>Debug Logs</Label>
+	</Field>
+
+</PluginConfig>
+

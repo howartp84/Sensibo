@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<Actions>
+
+	<Action id="setPower" deviceFilter="self" uiPath="DeviceActions">
+		<Name>Set Controls</Name>
+		<CallbackMethod>setPower</CallbackMethod>
+		<ConfigUI>
+			<Field id="unitpower" type="menu" defaultValue="False"
+				tooltip="Set the unit power on or off">
+                <Label>Set Power : </Label>
+				<List>
+					<Option value="True">On</Option>
+					<Option value="False">Off</Option>
+				</List>
+			</Field>
+            <Field id="fanlevel" type="menu" defaultValue="custom"
+                tooltip="Sent the AC fan level"
+                visibleBindingId="unitpower"
+                visibleBindingValue="True">
+                <Label>Set Fan Level : </Label>
+                <List>
+                    <Option value="quiet">Quiet</Option>
+                    <Option value="low">Low</Option>
+                    <Option value="medium_low">Medium Low</Option>
+                    <Option value="medium">Medium</Option>
+                    <Option value="medium_high">Medium High</Option>
+                    <Option value="high">High</Option>
+                    <Option value="auto">Auto</Option>
+                </List>
+            </Field>
+            <Field id="mode" type="menu" defaultValue="custom"
+                tooltip="Set the AC mode"
+                visibleBindingId="unitpower"
+                visibleBindingValue="True">
+                <Label>Set AC Mode : </Label>
+                <List>
+                    <Option value="fan">Fan</Option>
+                    <Option value="cool">Cool</Option>
+                    <Option value="heat">Heat</Option>
+                </List>
+            </Field>
+
+            <Field id="targetSource" type="menu" defaultValue="custom"
+                tooltip="Select the source for the target temperature."
+                visibleBindingId="mode"
+                visibleBindingValue="cool,heat">
+                <Label>Target Source:</Label>
+                <List>
+                    <Option value="custom">Enter Value</Option>
+                    <Option value="variable">Use Variable</Option>
+                </List>
+            </Field>
+
+            <Field id="targetVariable" type="menu" visibleBindingId="targetSource" visibleBindingValue="variable"
+                tooltip="Select an Indigo variable whose value at the time this action is executed should be used as the target temperature for this device. If the variable contains any text other than a number, nothing will happen and an error will be displayed in the log.">
+                <Label>Target Variable:</Label>
+                <List class="indigo.variables"/>
+            </Field>
+
+            <Field id="targetTemperature" type="menu" defaultValue="custom"
+                tooltip="Set the AC Target Temperature"
+                visibleBindingId="targetSource"
+                visibleBindingValue="custom">
+                <Label>Set Target Teperature : </Label>
+                <List>
+                    <Option value="16">16</Option>
+                    <Option value="17">17</Option>
+                    <Option value="18">18</Option>
+                    <Option value="19">19</Option>
+                    <Option value="20">20</Option>
+                    <Option value="21">21</Option>
+                    <Option value="22">22</Option>
+                    <Option value="23">23</Option>
+                    <Option value="24">24</Option>
+                    <Option value="25">25</Option>
+                    <Option value="26">26</Option>
+                    <Option value="27">27</Option>
+                    <Option value="28">28</Option>
+                    <Option value="29">29</Option>
+                    <Option value="30">30</Option>
+                    <Option value="31">31</Option>
+                </List>
+            </Field>
+		</ConfigUI>
+	</Action>
+    <Action id="togglePower" deviceFilter="self" uiPath="DeviceActions">
+        <Name>Toggle Power (ON/OFF)</Name>
+        <CallbackMethod>togglePower</CallbackMethod>
+    </Action>
+    <Action id="setFanSpeed" deviceFilter="self" uiPath="DeviceActions">
+        <Name>Set Fan Speed</Name>
+        <CallbackMethod>setFan</CallbackMethod>
+        <ConfigUI>
+            <Field id="fanlevel" type="menu" defaultValue="custom"
+                tooltip="Sent the AC fan level">
+                <Label>Set Fan Level : </Label>
+                <List>
+                    <Option value="quiet">Quiet</Option>
+                    <Option value="low">Low</Option>
+                    <Option value="medium_low">Medium Low</Option>
+                    <Option value="medium">Medium</Option>
+                    <Option value="medium_high">Medium High</Option>
+                    <Option value="high">High</Option>
+                    <Option value="auto">Auto</Option>
+                </List>
+            </Field>
+        </ConfigUI>
+    </Action>
+</Actions>
