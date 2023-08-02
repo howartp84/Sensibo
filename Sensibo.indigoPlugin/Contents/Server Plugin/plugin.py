@@ -14,7 +14,7 @@ import indigo
 import socket
 import logging
 import requests
-import simplejson as json
+import json as json
 ################################################################################
 # Globals
 ################################################################################
@@ -33,18 +33,18 @@ class Plugin(indigo.PluginBase):
 	def logmessage(self, message, logtype, isPluginError):
 
 		if (isPluginError):
-			self.errorLog(message)
+			self.errorLog(u"{}".format(message))
 		else:
 			if (logtype == 1):
-				indigo.server.log(message)
+				indigo.server.log(u"{}".format(message))
 			else:
-				self.debugLog(message)
+				self.debugLog(u"{}".format(message))
 
 		#if self.logLevel =="1":
-			#indigo.server.log(unicode(message),  type=self.pluginDisplayName + ' Debug', isError=False)
+			#indigo.server.log(u"{}".format(message),  type=self.pluginDisplayName + ' Debug', isError=False)
 
 		#if isPluginError == True:
-			#indigo.server.log(unicode(message),  type=self.pluginDisplayName + ' Error', isError=True)
+			#indigo.server.log(u"{}".format(message),  type=self.pluginDisplayName + ' Error', isError=True)
 
 
 
@@ -56,9 +56,9 @@ class Plugin(indigo.PluginBase):
 		self.stopThread = False
 		self._runSensibo = False #No point starting until we're configured
 
-		self.logmessage(u'Entered: Func init',0,False)
-		self.logmessage(u'Sensibo API Key is %s' % (self.apikey),0, False )
-		self.logmessage(u'Plugin Debug Log is %s' % (self.logLevel),0, False )
+		self.logmessage(u"Entered: Func init",0,False)
+		self.logmessage(u"Sensibo API Key is {}".format(self.apikey),0, False )
+		self.logmessage(u"Plugin Debug Log is {}".format(self.logLevel),0, False )
 
 	########################################
 	def startup(self):
@@ -131,7 +131,7 @@ class Plugin(indigo.PluginBase):
 				self.lastErrorMessage = errorText
 				return
 
-		except Exception, e:
+		except Exception as e:
 			self.logmessage(u'Unable to obtain data from Sensibo ' + unicode(e),1,True)
 
 	########################################
@@ -152,8 +152,8 @@ class Plugin(indigo.PluginBase):
 			self.debugLog("Stopping Sensibo plugin")
 			#self.shutdown()
 
-		except Exception, e:
-			 self.logmessage(u'Plugin Stopping.  Reason = %s' % (e) ,0,True)
+		except Exception as e:
+			 self.logmessage(u"Plugin Stopping.  Reason = {}".format(e) ,0,True)
 
 	def updatesensibo(self):
 		self.logmessage(u'Entered: Func update sensibo',0,False)
@@ -174,7 +174,7 @@ class Plugin(indigo.PluginBase):
 						podID = devProps['devicetype']
 						self.logmessage(u'Updating Sensibo Pod: {} ({})'.format(podID,devName),0,False)
 
- 						newStateList = []
+						newStateList = []
 
 						if podID == "":
 							continue
@@ -259,8 +259,8 @@ class Plugin(indigo.PluginBase):
 						newStateList.append({'key':"online", 'value':True})
 						dev.updateStatesOnServer(newStateList)
 
-				except Exception, e:
-					self.logmessage(u'Error:  Reason = %s' % (e) ,0,True)
+				except Exception as e:
+					self.logmessage(u"Error:  Reason = {}".format(e) ,0,True)
 
 		else:
 
@@ -318,29 +318,31 @@ class Plugin(indigo.PluginBase):
 
 	def pod_data(self, podID):
 		self.logmessage(u'Getting data(measurement) for {}'.format(podID),0,False)
-		#result = self._get("/pods/%s/measurements" % podID)
-		result = self._get("/pods/%s" % podID, fields="id,room,productModel,measurements,acState")
+		#result = self._get("/pods/{}/measurements".format(podID))
+		result = self._get("/pods/{}".format(podID), fields="id,room,productModel,measurements,acState")
 		return result['result']
 
 	def pod_ac_state(self, podID):
-		result = self._get("/pods/%s/acStates" % podID, limit = 1, fields="status,reason,acState")
+		result = self._get("/pods/{}/acStates".format(podID), limit = 1, fields="status,reason,acState")
 		return result['result']
 		#return result['result'][0]['acState']
 
 	def _post(self, path, data, ** params):
 		params['apiKey'] = self.apikey
-		response = requests.post(_SERVER + path, params = params, data = data)
-		response.raise_for_status()
-		return response.json()
+		try:
+			response = requests.post(_SERVER + path, params = params, data = data)
+			response.raise_for_status()
+			return response.json()
+		except:
+			indigo.server.log("Cannot process this request.  Sensibo device may be offline.", isError=True)
 
 	def pod_change_ac_state(self, podID, powerstate, target_temperature, mode, fan_level):
-		self._post("/pods/%s/acStates" % podID,
-					   json.dumps({'acState': {"on": powerstate, "targetTemperature": target_temperature, "mode": mode, "fanLevel": fan_level}}))
+		self._post("/pods/{}/acStates".format(podID),json.dumps({'acState': {"on": powerstate, "targetTemperature": target_temperature, "mode": mode, "fanLevel": fan_level}}))
 
 	# Closed Device Configuration
 	########################################
 	def closedDeviceConfigUi(self, valuesDict, userCancelled, typeId, deviceId):
-		self.logmessage(u'Entered: Func closeDeviceConfigUi :' + unicode(valuesDict),0,False)
+		self.logmessage(u"Entered: Func closeDeviceConfigUi : {}".format(valuesDict),0,False)
 
 		# If the user didn't cancel the changes, take any needed actions as a result of the changes made.
 		if not userCancelled:
@@ -396,7 +398,7 @@ class Plugin(indigo.PluginBase):
 
 		self.logLevel = valuesDict['pluginloglevel']
 		self.apikey = valuesDict['apikey']
-		indigo.server.log("Logging Now %s" % self.logLevel ,  type=self.pluginDisplayName + ' Info', isError=False)
+		indigo.server.log("Logging Now {}".format(self.logLevel) ,  type=self.pluginDisplayName + ' Info', isError=False)
 		self.updateAllSensiboLists()	#Fetch the devices etc from API before user starts creating Indigo devices.
 		return (True, valuesDict)
 
@@ -430,13 +432,13 @@ class Plugin(indigo.PluginBase):
 				targetTemperature=19
 				if targetSource == "custom":
 					targetTemperature = action.props.get('targetTemperature', 20)
-					self.logmessage(u'Setting temperature to custom value :' + unicode(targetTemperature),1,False)
+					self.logmessage(u"Setting temperature to custom value : {}".format(targetTemperature),1,False)
 					self.pod_change_ac_state(podID,True, int(targetTemperature), "%s" % mode, "%s" % fanlevel)
 				elif targetSource == "variable":
 					#targetTemperature = action.props.get('targettemperature', 20)
 					targetVarId = action.props.get('targetVariable', False)
 					targetTemperature = indigo.variables[int(targetVarId)].value
-					self.logmessage(u'Setting temperature to variable value :' + unicode(targetTemperature),1,False)
+					self.logmessage(u"Setting temperature to variable value : {}".format(targetTemperature),1,False)
 					self.pod_change_ac_state(podID,True, int(targetTemperature), "%s" % mode, "%s" % fanlevel)
 
 				#Lets update the local device states so that any triggers don't get fired accidently due to
@@ -472,7 +474,7 @@ class Plugin(indigo.PluginBase):
 
 	#Request To Toggle the current power state of the device.
 	def setFan(self, action, device):
-		self.logmessage(u'Entered: Func setFan ' + unicode(action),0,False)
+		self.logmessage(u"Entered: Func setFan {}".format(action),0,False)
 
 		devProps = device.pluginProps
 		podID = devProps['devicetype']
@@ -489,6 +491,3 @@ class Plugin(indigo.PluginBase):
 			targetTemperature = device.states['targetTemperature']
 			self.pod_change_ac_state(podID,False, int(targetTemperature), "%s" % mode, "%s" % fanlevel)
 			device.updateStateOnServer("fanLevel",fanlevel)
-
-
-
